@@ -1,4 +1,18 @@
+import { useState } from "react";
+import { Cancion } from "../../modelos/Cancion";
+import { ARREGLO_CANCIONES } from "../../mocks/Cancion-mocks";
+import { ARREGLO_CANCION_GENERO } from "../../utilidades/dominios/DonGenero";
+
 export const CancionListar = () => {
+  const [arrCancion] = useState<Cancion[]>(ARREGLO_CANCIONES);
+  const nombreGenero = (valor: string) => {
+    for (const objGenero of ARREGLO_CANCION_GENERO) {
+      if (objGenero.codGenero == valor) {
+        return objGenero.nombreGenero;
+      }
+    }
+  };
+
   return (
     <>
       <div className="pt-5 d-flex justify-content-center">
@@ -9,39 +23,24 @@ export const CancionListar = () => {
                 <th scope="col">No. </th>
                 <th scope="col">Título canción</th>
                 <th scope="col">Cantante</th>
-                <th scope="col">Duración</th>
                 <th scope="col">Género</th>
+                <th scope="col">Imagen</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td scope="row">1</td>
-                <td>La noche</td>
-                <td>Joe Arroyo</td>
-                <td>4.5</td>
-                <td>Salsa</td>
-              </tr>
-              <tr>
-                <td scope="row">2</td>
-                <td>Mi ex tenía razón</td>
-                <td>Karol G</td>
-                <td>3.5</td>
-                <td>Reggaeton</td>
-              </tr>
-              <tr>
-                <td scope="row">3</td>
-                <td>Sin medir distancia</td>
-                <td>Diomedes Diaz</td>
-                <td>4.8</td>
-                <td>Vallenato</td>
-              </tr>
-              <tr>
-                <td scope="row">4</td>
-                <td>My inmortal</td>
-                <td>Evanescense</td>
-                <td>5.2</td>
-                <td>Metal Soft</td>
-              </tr>
+              {arrCancion.map((miCan: Cancion) => (
+                <tr key={miCan.codCancion}>
+                  <td scope="row">{miCan.codCancion}</td>
+                  <td>{miCan.TituloCancion}</td>
+                  <td>{miCan.cantanteCancion}</td>
+                  <td>{nombreGenero(miCan.codgeneroCancion)}</td>
+                  <td>
+                    <img src={miCan.imagenCancionBase64} alt="" className="imagenListado" />
+                    {miCan.imagenCancion} <br />
+                    {miCan.imagenCancionBase64}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
